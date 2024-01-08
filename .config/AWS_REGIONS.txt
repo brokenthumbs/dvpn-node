@@ -1,0 +1,2 @@
+eu-west-3
+eu-north-1

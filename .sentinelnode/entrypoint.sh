@@ -13,9 +13,9 @@ if [[ -n ${ECS_CONTAINER_METADATA_URI} ]]; then
 fi
 
 main() {
-  configure
   case ${1} in
-    initialize|wallet|operator|start|bash) "$@" ;;
+    bash) "$@" ;;
+    initialize|wallet|operator|start) configure; "$@" ;;
     *) ;;
   esac
 }
