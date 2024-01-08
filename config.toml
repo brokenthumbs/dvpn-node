@@ -1,0 +1,73 @@
+[chain]
+# Gas limit to set per transaction
+gas = 200000
+
+# Gas adjustment factor
+gas_adjustment = 1.05
+
+# Gas prices to determine the transaction fee
+gas_prices = "0.1udvpn"
+
+# The network chain ID
+id = "sentinelhub-2"
+
+# Comma separated Tendermint RPC addresses for the chain
+rpc_addresses = "https://rpc.sentinel.co:443"
+
+# Timeout seconds for querying the data from the RPC server
+rpc_query_timeout = 10
+
+# Timeout seconds for broadcasting the transaction through RPC server
+rpc_tx_timeout = 30
+
+# Calculate the transaction fee by simulating it
+simulate_and_execute = true
+
+[handshake]
+# Enable Handshake DNS resolver
+enable = false
+
+# Number of peers
+peers = 8
+
+[keyring]
+# Underlying storage mechanism for keys
+backend = "file"
+
+# Name of the key with which to sign
+from = "operator"
+
+[node]
+# Time interval between each set_sessions operation
+interval_set_sessions = "10s"
+
+# Time interval between each update_sessions transaction
+interval_update_sessions = "1h55m0s"
+
+# Time interval between each set_status transaction
+interval_update_status = "55m0s"
+
+# IPv4 address to replace the public IPv4 address with
+ipv4_address = "__IPV4_ADDRESS__"
+
+# API listen-address
+listen_on = "0.0.0.0:__API_PORT__"
+
+# Name of the node
+moniker = "__MONIKER__"
+
+# Prices for one gigabyte of bandwidth provided
+gigabyte_prices = "52573ibc/31FEE1A2A9F9C01113F90BD0BBCCE8FD6BBB8585FAF109A2101827DD1D5B95B8,9204ibc/A8C2D23A1E6F95DA4E48BA349667E322BD7A6C996D8A4AAE8BA72E190F3D1477,1180852ibc/B1C0DDB14F25279A2026BC8794E12B259F8BDA546A3C5132CCAEE4431CE36783,122740ibc/ED07A3391A112B175915CD8FAF43A2DA8E4790EDE12566649D0C2F97716B8518,15342624udvpn"
+
+# Prices for one hour
+hourly_prices = "18480ibc/31FEE1A2A9F9C01113F90BD0BBCCE8FD6BBB8585FAF109A2101827DD1D5B95B8,770ibc/A8C2D23A1E6F95DA4E48BA349667E322BD7A6C996D8A4AAE8BA72E190F3D1477,1871892ibc/B1C0DDB14F25279A2026BC8794E12B259F8BDA546A3C5132CCAEE4431CE36783,18897ibc/ED07A3391A112B175915CD8FAF43A2DA8E4790EDE12566649D0C2F97716B8518,13557200udvpn"
+
+# Public URL of the node
+remote_url = "https://__IPV4_ADDRESS__:__API_PORT__"
+
+# Type of node
+type = "v2ray"
+
+[qos]
+# Limit max number of concurrent peers
+max_peers = 250

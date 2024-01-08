@@ -1,0 +1,6 @@
+[vmess]
+# Port number to accept the incoming connections
+listen_port = __V2RAY_PORT__
+
+# Name of the transport protocol
+transport = "grpc"
