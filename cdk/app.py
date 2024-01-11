@@ -1,6 +1,7 @@
 from aws_cdk import (
   aws_autoscaling as autoscaling,
   aws_ec2 as ec2,
+  aws_ecr as ecr,
   aws_ecs as ecs,
   App, Stack
 )
@@ -24,5 +25,23 @@ vpc = ec2.Vpc(
   ],
   nat_gateways=0,
 )
+
+cluster = ecs.Cluster(
+    stack, "EcsCluster",
+    vpc=vpc,
+    cluster_name="dvpn-node",
+    enable_fargate_capacity_providers=True
+)
+
+repository = ecr.Repository(
+    self, "Repository",
+    image_scan_on_push=False,
+    empty_on_delete=False,
+    auto_delete_images=True,
+    image_tag_mutability=ecr.TagMutability.MUTABLE,
+    removal_policy=RemovalPolicy.DESTROY,
+    repository_name="dvpn-node"
+)
+repository.add_lifecycle_rule(max_image_count=1)
 
 app.synth()
