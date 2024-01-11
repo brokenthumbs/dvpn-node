@@ -39,7 +39,7 @@ repository = ecr.Repository(
     empty_on_delete=False,
     auto_delete_images=True,
     image_tag_mutability=ecr.TagMutability.MUTABLE,
-    removal_policy=cdk.RemovalPolicy.DESTROY,
+    removal_policy=aws_cdk.RemovalPolicy.DESTROY,
     repository_name="dvpn-node"
 )
 repository.add_lifecycle_rule(max_image_count=1)
