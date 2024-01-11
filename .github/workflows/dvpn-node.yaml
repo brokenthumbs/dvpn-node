@@ -1,4 +1,4 @@
-name: dvpn-node-initialize
+name: dvpn-node
 
 on:
   # push:
@@ -14,7 +14,7 @@ env:
   role_to_assume: arn:aws:iam::103309208207:role/dvpn-node
 
 jobs:
-  initialize:
+  cdk:
     strategy:
       fail-fast: false
       matrix:
@@ -33,7 +33,7 @@ jobs:
         with:
           node-version: "20"
       - name: Install Python dependencies
-        working-directory: ./cdk/initialize/
+        working-directory: ./cdk/
         run: |
           python -m pip install --upgrade pip
           python -m pip install --requirement requirements.txt
@@ -46,7 +46,7 @@ jobs:
           aws-region: ${{ matrix.region }}
           role-to-assume: ${{ env.role_to_assume }}
       - name: Deploy to AWS
-        working-directory: ./cdk/initialize/
+        working-directory: ./cdk/
         run: |
           cdk bootstrap aws://${{ env.account_id }}/${{ matrix.region }}
           cdk deploy

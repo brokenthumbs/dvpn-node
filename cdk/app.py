@@ -17,7 +17,7 @@ vpc = ec2.Vpc(
   max_azs=2,
   subnet_configuration=[
     ec2.SubnetConfiguration(
-      name="public",
+      name="Public",
       subnet_type=ec2.SubnetType.PUBLIC,
       map_public_ip_on_launch=True,
     )
