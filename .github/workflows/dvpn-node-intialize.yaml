@@ -10,6 +10,7 @@ permissions:
   contents: read    # This is required for actions/checkout
 
 env:
+  account_id: "103309208207"
   role_to_assume: arn:aws:iam::103309208207:role/dvpn-node-initialize
 
 jobs:
@@ -46,6 +47,8 @@ jobs:
           role-to-assume: ${{ env.role_to_assume }}
       - name: Deploy to AWS
         working-directory: ./cdk/initialize/
-        run: cdk deploy
+        run: |
+          cdk bootstrap aws://${{ env.account_id }}/${{ matrix.region }}
+          cdk deploy
         env:
           AWS_REGION: ${{ matrix.region }}
