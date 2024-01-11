@@ -11,7 +11,7 @@ permissions:
 
 env:
   account_id: "103309208207"
-  role_to_assume: arn:aws:iam::103309208207:role/dvpn-node-initialize
+  role_to_assume: arn:aws:iam::103309208207:role/dvpn-node
 
 jobs:
   initialize:
