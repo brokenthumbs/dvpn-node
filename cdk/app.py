@@ -7,7 +7,7 @@ from aws_cdk import (
   App, Stack, RemovalPolicy
 )
 from pathlib import Path
-import cdk_ecr_deployment as ecr_deploy
+import cdk_docker_image_deployment as cdk_docker_image_deployment
 import os
 
 app = App()
@@ -42,17 +42,32 @@ repository = ecr.Repository(
   empty_on_delete=False,
   image_tag_mutability=ecr.TagMutability.MUTABLE,
   removal_policy=RemovalPolicy.DESTROY,
-  repository_name="dvpn-node"
+  repository_name="dvpn-node",
+  lifecycle_rules=[
+    ecr.LifecycleRule(
+      max_image_count=1,
+    )
+  ]
 )
-repository.add_lifecycle_rule(max_image_count=1)
 
 image = ecr_assets.DockerImageAsset(stack, "CDKDockerImage",
   directory=str(Path(__file__).parent.parent)
 )
 
-ecr_deploy.ECRDeployment(stack, "DeployDockerImage",
-  src=ecr_deploy.DockerImageName(image.image_uri),
-  dest=ecr_deploy.DockerImageName(f"{repository.repository_uri}:latest")
+
+cdk_docker_image_deployment.DockerImageDeployment(
+  stack, "DockerImageDeployment",
+  source=cdk_docker_image_deployment.Source.directory("."),
+  destination=cdk_docker_image_deployment.Destination.ecr(
+    repository=repository,
+    tag="latest",
+  )
 )
+
+# ecr_deploy.ECRDeployment(stack, "DeployDockerImage",
+#   src=ecr_deploy.DockerImageName(image.image_uri),
+#   dest=ecr_deploy.DockerImageName(f"{repository.repository_uri}:latest"),
+#   exclude=["cdk.out", "cdk", ".git"]
+# )
 
 app.synth()
