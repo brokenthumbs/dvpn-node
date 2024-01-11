@@ -45,8 +45,23 @@ jobs:
         with:
           aws-region: ${{ matrix.region }}
           role-to-assume: ${{ env.role_to_assume }}
-      - name: Deploy to AWS
-        working-directory: ./cdk/
+      - name: Use CDK to initialize AWS Region
+        working-directory: ./cdk/initialize
+        run: |
+          cdk bootstrap aws://${{ env.account_id }}/${{ matrix.region }}
+          cdk deploy
+        env:
+          AWS_REGION: ${{ matrix.region }}
+      - name: Build Docker Image
+        run: |
+          echo "build docker image"
+      - name: Upload Docker Image to ECR
+        run: |
+          echo "upload docker image"
+        env:
+          AWS_REGION: ${{ matrix.region }}
+      - name: Use CDK to initialize AWS Region
+        working-directory: ./cdk/update
         run: |
           cdk bootstrap aws://${{ env.account_id }}/${{ matrix.region }}
           cdk deploy

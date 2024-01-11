@@ -9,7 +9,7 @@ from aws_cdk import (
 import os
 
 app = App()
-stack = Stack(app, f"{os.environ.get("AWS_REGION")}")
+stack = Stack(app, f"{os.environ.get("AWS_REGION")}-initialize")
 
 # Create a cluster
 vpc = ec2.Vpc(
