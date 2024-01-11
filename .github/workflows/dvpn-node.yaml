@@ -35,16 +35,16 @@ jobs:
       - name: Install CDK
         run: |
           npm install --global aws-cdk
+      - name: Install Python dependencies for CDK initialize
+        working-directory: ./cdk
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --requirement requirements.txt
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: ${{ matrix.region }}
           role-to-assume: ${{ env.role_to_assume }}
-      - name: Install Python dependencies for CDK initialize
-        working-directory: ./cdk/initialize
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install --requirement requirements.txt
       - name: Use CDK to initialize AWS Region
         working-directory: ./cdk/initialize
         run: |
@@ -60,11 +60,6 @@ jobs:
           echo "upload docker image"
         env:
           AWS_REGION: ${{ matrix.region }}
-      - name: Install Python dependencies for CDK updte
-        working-directory: ./cdk/update
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install --requirement requirements.txt
       - name: Use CDK to update ECS Services
         working-directory: ./cdk/update
         run: |
