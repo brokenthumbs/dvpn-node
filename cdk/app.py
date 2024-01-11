@@ -1,6 +1,5 @@
 from aws_cdk import (
   aws_autoscaling as autoscaling,
-  core as cdk,
   aws_ec2 as ec2,
   aws_ecr as ecr,
   aws_ecs as ecs,
