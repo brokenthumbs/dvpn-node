@@ -6,6 +6,7 @@ from aws_cdk import (
   aws_ecr_assets as ecr_assets,
   App, Stack, RemovalPolicy
 )
+from pathlib import Path
 import cdk_ecr_deployment as ecr_deploy
 import os
 
@@ -46,7 +47,7 @@ repository = ecr.Repository(
 repository.add_lifecycle_rule(max_image_count=1)
 
 image = ecr_assets.DockerImageAsset(stack, "CDKDockerImage",
-    directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "../")
+    directory=Path(__file__).parent
 )
 
 ecr_deploy.ECRDeployment(stack, "DeployDockerImage1",
