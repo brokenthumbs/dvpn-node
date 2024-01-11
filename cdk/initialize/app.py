@@ -24,3 +24,5 @@ vpc = ec2.Vpc(
   ],
   nat_gateways=0,
 )
+
+app.synth()
