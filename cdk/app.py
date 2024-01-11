@@ -57,7 +57,7 @@ image = ecr_assets.DockerImageAsset(stack, "CDKDockerImage",
 
 cdk_docker_image_deployment.DockerImageDeployment(
   stack, "DockerImageDeployment",
-  source=cdk_docker_image_deployment.Source.directory("."),
+  source=cdk_docker_image_deployment.Source.directory("../"),
   destination=cdk_docker_image_deployment.Destination.ecr(
     repository=repository,
     tag="latest",
