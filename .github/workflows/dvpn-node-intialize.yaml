@@ -1,8 +1,9 @@
 name: dvpn-node-initialize
 
 on:
-  push:
-    branches: [main]
+  # push:
+  #   branches: [main]
+  workflow_dispatch:
 
 env:
   role_to_assume: arn:aws:iam::103309208207:role/dvpn-node-initialize
