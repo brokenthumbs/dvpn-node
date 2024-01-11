@@ -20,11 +20,6 @@ vpc = ec2.Vpc(
       name="public",
       subnet_type=ec2.SubnetType.PUBLIC,
       map_public_ip_on_launch=True,
-    ),
-    ec2.SubnetConfiguration(
-      name="public",
-      subnet_type=ec2.SubnetType.PUBLIC,
-      map_public_ip_on_launch=True,
     )
   ],
   nat_gateways=0,
