@@ -6,7 +6,7 @@ from aws_cdk import (
   aws_ecr_assets as DockerImageAsset,
   App, Stack, RemovalPolicy
 )
-import * as ecrdeploy from "cdk-ecr-deployment";
+import cdk_ecr_deployment as ecrdeploy
 import os
 
 app = App()
