@@ -52,7 +52,8 @@ image = ecr_assets.DockerImageAsset(stack, "CDKDockerImage",
 
 ecr_deploy.ECRDeployment(stack, "DeployDockerImage",
     src=ecr_deploy.DockerImageName(image.image_uri),
-    dest=ecr_deploy.DockerImageName(f"{repository.repository_uri}:latest")
+    dest=ecr_deploy.DockerImageName(f"{repository.repository_uri}:latest"),
+    exclude=["cdk.out"]
 )
 
 app.synth()
