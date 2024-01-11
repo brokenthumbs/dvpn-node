@@ -45,10 +45,10 @@ jobs:
         with:
           aws-region: ${{ matrix.region }}
           role-to-assume: ${{ env.role_to_assume }}
-      - name: Deploy to AWS
-        working-directory: ./cdk/
-        run: |
-          cdk bootstrap aws://${{ env.account_id }}/${{ matrix.region }}
-          cdk deploy
-        env:
-          AWS_REGION: ${{ matrix.region }}
+      # - name: Deploy to AWS
+      #   working-directory: ./cdk/
+      #   run: |
+      #     cdk bootstrap aws://${{ env.account_id }}/${{ matrix.region }}
+      #     cdk deploy
+      #   env:
+      #     AWS_REGION: ${{ matrix.region }}
