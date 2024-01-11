@@ -30,30 +30,29 @@ vpc = ec2.Vpc(
 )
 
 cluster = ecs.Cluster(
-    stack, "EcsCluster",
-    vpc=vpc,
-    cluster_name="dvpn-node",
-    enable_fargate_capacity_providers=True
+  stack, "EcsCluster",
+  vpc=vpc,
+  cluster_name="dvpn-node",
+  enable_fargate_capacity_providers=True
 )
 
 repository = ecr.Repository(
-    stack, "Repository",
-    image_scan_on_push=False,
-    empty_on_delete=False,
-    image_tag_mutability=ecr.TagMutability.MUTABLE,
-    removal_policy=RemovalPolicy.DESTROY,
-    repository_name="dvpn-node"
+  stack, "Repository",
+  image_scan_on_push=False,
+  empty_on_delete=False,
+  image_tag_mutability=ecr.TagMutability.MUTABLE,
+  removal_policy=RemovalPolicy.DESTROY,
+  repository_name="dvpn-node"
 )
 repository.add_lifecycle_rule(max_image_count=1)
 
 image = ecr_assets.DockerImageAsset(stack, "CDKDockerImage",
-    directory=str(Path(__file__).parent.parent)
+  directory=str(Path(__file__).parent.parent)
 )
 
 ecr_deploy.ECRDeployment(stack, "DeployDockerImage",
-    src=ecr_deploy.DockerImageName(image.image_uri),
-    dest=ecr_deploy.DockerImageName(f"{repository.repository_uri}:latest"),
-    exclude=["cdk.out"]
+  src=ecr_deploy.DockerImageName(image.image_uri),
+  dest=ecr_deploy.DockerImageName(f"{repository.repository_uri}:latest")
 )
 
 app.synth()
