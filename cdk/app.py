@@ -34,7 +34,7 @@ cluster = ecs.Cluster(
 )
 
 repository = ecr.Repository(
-    self, "Repository",
+    stack, "Repository",
     image_scan_on_push=False,
     empty_on_delete=False,
     auto_delete_images=True,
