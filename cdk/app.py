@@ -47,7 +47,7 @@ repository = ecr.Repository(
 repository.add_lifecycle_rule(max_image_count=1)
 
 image = ecr_assets.DockerImageAsset(stack, "CDKDockerImage",
-    directory=str(Path(__file__).parent)
+    directory=str(Path(__file__).parent.parent)
 )
 
 ecr_deploy.ECRDeployment(stack, "DeployDockerImage",
