@@ -34,7 +34,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume:
+          role-to-assume: ${{ env.role_to_assume }}
           aws-region: ${{ matrix.region }}
       - name: Deploy to AWS
         run: cdk deploy
