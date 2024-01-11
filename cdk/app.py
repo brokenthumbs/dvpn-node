@@ -3,10 +3,10 @@ from aws_cdk import (
   aws_ec2 as ec2,
   aws_ecr as ecr,
   aws_ecs as ecs,
-  aws_ecr_assets as DockerImageAsset,
+  aws_ecr_assets as ecr_assets,
   App, Stack, RemovalPolicy
 )
-import cdk_ecr_deployment as ecrdeploy
+import cdk_ecr_deployment as ecr_deploy
 import os
 
 app = App()
@@ -45,13 +45,13 @@ repository = ecr.Repository(
 )
 repository.add_lifecycle_rule(max_image_count=1)
 
-image = DockerImageAsset(stack, "CDKDockerImage",
+image = ecr_assets.DockerImageAsset(stack, "CDKDockerImage",
     directory=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 )
 
-ecrdeploy.ECRDeployment(stack, "DeployDockerImage1",
-    src=ecrdeploy.DockerImageName(image.image_uri),
-    dest=ecrdeploy.DockerImageName(f"{repository.repository_uri}:latest")
+ecr_deploy.ECRDeployment(stack, "DeployDockerImage1",
+    src=ecr_deploy.DockerImageName(image.image_uri),
+    dest=ecr_deploy.DockerImageName(f"{repository.repository_uri}:latest")
 )
 
 app.synth()
