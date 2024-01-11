@@ -13,7 +13,7 @@ stack = Stack(app, f"{os.environ.get("AWS_REGION")}-initialize")
 
 # Create a cluster
 vpc = ec2.Vpc(
-  stack, "vpc",
+  stack, "Vpc",
   vpc_name=f"{os.environ.get("AWS_REGION")}",
   create_internet_gateway=True,
   max_azs=2,
