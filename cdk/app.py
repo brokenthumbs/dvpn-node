@@ -6,8 +6,6 @@ from aws_cdk import (
   aws_ecr_assets as ecr_assets,
   App, Stack, RemovalPolicy
 )
-from pathlib import Path
-import cdk_docker_image_deployment as cdk_docker_image_deployment
 import os
 
 app = App()
@@ -49,25 +47,5 @@ repository = ecr.Repository(
     )
   ]
 )
-
-image = ecr_assets.DockerImageAsset(stack, "CDKDockerImage",
-  directory=str(Path(__file__).parent.parent)
-)
-
-
-cdk_docker_image_deployment.DockerImageDeployment(
-  stack, "DockerImageDeployment",
-  source=cdk_docker_image_deployment.Source.directory("../"),
-  destination=cdk_docker_image_deployment.Destination.ecr(
-    repository=repository,
-    tag="latest",
-  )
-)
-
-# ecr_deploy.ECRDeployment(stack, "DeployDockerImage",
-#   src=ecr_deploy.DockerImageName(image.image_uri),
-#   dest=ecr_deploy.DockerImageName(f"{repository.repository_uri}:latest"),
-#   exclude=["cdk.out", "cdk", ".git"]
-# )
 
 app.synth()
