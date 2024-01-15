@@ -9,7 +9,7 @@ import os
 
 app = App()
 stack = Stack(
-  app, f"{os.environ.get("AWS_REGION")}-update"
+  app, f"{os.environ.get("AWS_REGION")}-update",
   env={
     "account": os.environ.get("AWS_ACCOUNT_ID"),
     "region": os.environ.get("AWS_REGION")
@@ -28,7 +28,10 @@ def exist_ssm_parameter(param_name: str) -> bool:
   except ssm_client.exceptions.ParameterNotFound:
     return False
 
-vpc = ec2.Vpc.from_lookup(stack, "Vpc", vpc_id=os.environ.get("AWS_REGION"))
+vpc = ec2.Vpc.from_lookup(
+  stack, "Vpc",
+  vpc_id=os.environ.get("AWS_REGION")
+)
 
 cluster = ecs.Cluster(
   stack, "EcsCluster",
