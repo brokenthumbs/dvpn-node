@@ -31,7 +31,7 @@ jobs:
           - ubuntu-latest
         region:
           - eu-west-3
-          # - eu-north-1
+          - eu-north-1
     runs-on: ${{ matrix.os }}
     steps:
       - name: Set environment variables
