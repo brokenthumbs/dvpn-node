@@ -12,6 +12,7 @@ permissions:
 env:
   aws_account_id: "103309208207"
   service_name: "dvpn-node"
+  max_image_count: 1
 
 jobs:
   cdk:
@@ -57,6 +58,7 @@ jobs:
           AWS_REGION: ${{ matrix.region }}
           CLUSTER_NAME: ${{ env.service_name }}
           REPOSITORY_NAME: ${{ env.service_name }}
+          MAX_IMAGE_COUNT: ${{ env.max_image_count }}
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
