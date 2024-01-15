@@ -30,7 +30,7 @@ vpc = ec2.Vpc(
 cluster = ecs.Cluster(
   stack, "EcsCluster",
   vpc=vpc,
-  cluster_name="dvpn-node",
+  cluster_name=os.environ.get("CLUSTER_NAME"),
   enable_fargate_capacity_providers=True
 )
 
@@ -40,7 +40,7 @@ repository = ecr.Repository(
   empty_on_delete=False,
   image_tag_mutability=ecr.TagMutability.MUTABLE,
   removal_policy=RemovalPolicy.DESTROY,
-  repository_name="dvpn-node",
+  repository_name=os.environ.get("REPOSITORY_NAME"),
   lifecycle_rules=[
     ecr.LifecycleRule(
       max_image_count=1,
