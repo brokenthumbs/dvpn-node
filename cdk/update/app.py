@@ -66,7 +66,7 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
           stack, "StringParameter-password",
           string_parameter_name="password"
         ),
-      )
+      ),
       "BIP39_MNEMONIC": ecs.Secret.from_ssm_parameter(
         ssm.StringParameter.from_secure_string_parameter_attributes(
           stack, f"StringParameter-{wallet_key(wallet_number)}",
