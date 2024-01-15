@@ -46,6 +46,11 @@ repository = ecr.Repository.from_repository_name(
   repository_name=os.environ.get("REPOSITORY_NAME")
 )
 
+ssm_parameter_password = ssm.StringParameter.from_secure_string_parameter_attributes(
+  stack, "StringParameter-password",
+  parameter_name="password"
+)
+
 wallet_number = 1
 while exist_ssm_parameter(wallet_key(wallet_number)):
   print(f"creating fargate service for wallet: {wallet_key(wallet_number)}")
@@ -62,10 +67,7 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
     ),
     secrets={
       "PASSWORD": ecs.Secret.from_ssm_parameter(
-        ssm.StringParameter.from_secure_string_parameter_attributes(
-          stack, "StringParameter-password",
-          parameter_name="password"
-        ),
+        ssm_parameter_password
       ),
       "BIP39_MNEMONIC": ecs.Secret.from_ssm_parameter(
         ssm.StringParameter.from_secure_string_parameter_attributes(
