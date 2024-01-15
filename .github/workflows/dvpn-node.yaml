@@ -32,10 +32,10 @@ jobs:
     steps:
       - name: Set environment variables
         run: |
-          echo "role_to_assume=arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/${{ github.workflow }}" >> ${GITHUB_ENV}
-          echo "aws_account_id=${{ env.AWS_ACCOUNT_ID }}" >> ${GITHUB_ENV}
-          echo "api_port=${{ env.API_PORT }}" >> ${GITHUB_ENV}
-          echo "v2ray_port=${{ env.V2RAY_PORT }}" >> ${GITHUB_ENV}
+          echo "role_to_assume=arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/${{ github.workflow }}" >> ${GITHUB_ENV}
+          echo "aws_account_id=${{ vars.AWS_ACCOUNT_ID }}" >> ${GITHUB_ENV}
+          echo "api_port=${{ vars.API_PORT }}" >> ${GITHUB_ENV}
+          echo "v2ray_port=${{ vars.V2RAY_PORT }}" >> ${GITHUB_ENV}
       - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
