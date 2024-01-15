@@ -2,6 +2,7 @@ from aws_cdk import (
   aws_ec2 as ec2,
   aws_ecr as ecr,
   aws_ecs as ecs,
+  aws_ssm as ssm,
   App, Stack
 )
 import boto3
@@ -60,8 +61,18 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
       tag="latest"
     ),
     secrets={
-      "PASSWORD": ecs.Secret.from_ssm_parameter("PASSWORD"),
-      "BIP39_MNEMONIC": ecs.Secret.from_ssm_parameter(wallet_key(wallet_number))
+      "PASSWORD": ecs.Secret.from_ssm_parameter(
+        ssm.StringParameter.from_secure_string_parameter_attributes(
+          stack, "StringParameter-password",
+          string_parameter_name="password"
+        ),
+      )
+      "BIP39_MNEMONIC": ecs.Secret.from_ssm_parameter(
+        ssm.StringParameter.from_secure_string_parameter_attributes(
+          stack, f"StringParameter-{wallet_key(wallet_number)}",
+          string_parameter_name=wallet_key(wallet_number)
+        )
+      )
     },
     command="start",
     logging=None,
