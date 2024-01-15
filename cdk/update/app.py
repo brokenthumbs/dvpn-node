@@ -4,7 +4,7 @@ from aws_cdk import (
   aws_ecs as ecs,
   aws_logs as logs,
   aws_ssm as ssm,
-  App, Stack
+  App, Stack, Duration
 )
 import boto3
 import os
@@ -113,6 +113,13 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
         stream_prefix="sentinel",
         mode=ecs.AwsLogDriverMode.NON_BLOCKING,
         log_group=log_group
+    ),
+    health_check=ecs.HealthCheck(
+      command=["CMD-SHELL", f"curl --output /dev/null --silent --fail localhost:{os.environ.get("API_PORT")}/status || exit 1"],
+      interval=Duration.seconds(30),
+      retries=10,
+      start_period=Duration.minutes(5),
+      timeout=Duration.seconds(5)
     ),
     port_mappings=[
       ecs.PortMapping(container_port=int(os.environ.get("API_PORT"))),
