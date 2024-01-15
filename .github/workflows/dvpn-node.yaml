@@ -19,8 +19,8 @@ env:
   node_version: "20"
   aws_account_id: "103309208207"
   service_name: "dvpn-node"
-  api_port: 47368
-  v2ray_port: 56646
+  api_port: 8000
+  v2ray_port: 8420
 
 jobs:
   cdk:
