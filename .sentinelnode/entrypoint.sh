@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-SENTINEL_CONFIG=/home/sentinel/.sentinelnode/config.toml
-V2RAY_CONFIG=/home/sentinel/.sentinelnode/v2ray.toml
+SENTINEL_CONFIG=${SENTINEL_NODE_DIR}/.sentinelnode/config.toml
+V2RAY_CONFIG=${SENTINEL_NODE_DIR}/.sentinelnode/v2ray.toml
 IPV4_ADDRESS_CHECKER=https://checkip.amazonaws.com
 MONIKER=${MONIKER:-"dvpn-node"}
 
