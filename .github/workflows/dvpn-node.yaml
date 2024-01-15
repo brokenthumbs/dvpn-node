@@ -56,32 +56,32 @@ jobs:
         with:
           aws-region: ${{ matrix.region }}
           role-to-assume: ${{ env.role_to_assume }}
-      # - name: (CDK) Initialize ECR
-      #   working-directory: ./cdk/initialize
-      #   run: |
-      #     cdk bootstrap aws://${{ env.aws_account_id }}/${{ matrix.region }}
-      #     cdk deploy
-      #   env:
-      #     AWS_ACCOUNT_ID: ${{ env.aws_account_id }}
-      #     AWS_REGION: ${{ matrix.region }}
-      #     REPOSITORY_NAME: ${{ env.service_name }}
-      #     MAX_IMAGE_COUNT: ${{ env.max_image_count }}
-      # - name: Login to Amazon ECR
-      #   id: login-ecr
-      #   uses: aws-actions/amazon-ecr-login@v2
-      # - name: Set up Docker Buildx
-      #   uses: docker/setup-buildx-action@v3
-      # - name: Docker Build Push
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     context: .
-      #     provenance: false
-      #     push: true
-      #     tags: |
-      #       ${{ steps.login-ecr.outputs.registry }}/${{ env.service_name }}:latest
-      #       ${{ steps.login-ecr.outputs.registry }}/${{ env.service_name }}:${{ github.sha }}
-      #     cache-from: type=gha
-      #     cache-to: type=gha,mode=max
+      - name: (CDK) Initialize ECR
+        working-directory: ./cdk/initialize
+        run: |
+          cdk bootstrap aws://${{ env.aws_account_id }}/${{ matrix.region }}
+          cdk deploy
+        env:
+          AWS_ACCOUNT_ID: ${{ env.aws_account_id }}
+          AWS_REGION: ${{ matrix.region }}
+          REPOSITORY_NAME: ${{ env.service_name }}
+          MAX_IMAGE_COUNT: ${{ env.max_image_count }}
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Docker Build Push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          provenance: false
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.service_name }}:latest
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.service_name }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: (CDK) Update ECS
         working-directory: ./cdk/update
         run: |

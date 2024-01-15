@@ -3,6 +3,8 @@ FROM ghcr.io/sentinel-official/dvpn-node:v0.7.1
 ARG USERNAME=sentinel
 ARG SENTINEL_NODE_DIR=/home/${USERNAME}/.sentinelnode
 
+RUN apk add curl
+
 RUN addgroup -S ${USERNAME} && adduser -S ${USERNAME} -G ${USERNAME}
 USER ${USERNAME}
 RUN mkdir -p ${SENTINEL_NODE_DIR}

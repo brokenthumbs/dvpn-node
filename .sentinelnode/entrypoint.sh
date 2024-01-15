@@ -3,13 +3,10 @@
 SENTINEL_CONFIG=/home/sentinel/.sentinelnode/config.toml
 V2RAY_CONFIG=/home/sentinel/.sentinelnode/v2ray.toml
 IPV4_ADDRESS_CHECKER="https://checkip.amazonaws.com"
-MONIKER=$(cat /etc/hostname)
+MONIKER=${MONIKER:-"dvpn-node"}
 
 if [[ -n ${ECS_CONTAINER_METADATA_URI} ]]; then
   IPV4_ADDRESS_CHECKER="http://169.254.169.254/latest/meta-data/public-ipv4"
-  AWS_AVAILABILITY_ZONE=$(wget -qO- http://169.254.169.254/latest/meta-data/placement/availability-zone)
-  AWS_REGION=$(echo "${AWS_AVAILABILITY_ZONE}" | sed 's/[a-z]$//')
-  MONIKER="${AWS_REGION}-${MONIKER}"
 fi
 
 main() {
@@ -23,7 +20,7 @@ main() {
 configure() {
   if [[ -z ${API_PORT} ]]; then exit 1; fi
   if [[ -z ${V2RAY_PORT} ]]; then exit 1; fi
-  IPV4_ADDRESS=$(wget -qO- ${IPV4_ADDRESS_CHECKER})
+  IPV4_ADDRESS=$(curl --silent ${IPV4_ADDRESS_CHECKER})
   sed -i"" -r "s/__IPV4_ADDRESS__/${IPV4_ADDRESS}/" ${SENTINEL_CONFIG}
   sed -i"" -r "s/__MONIKER__/${MONIKER}/" ${SENTINEL_CONFIG}
   sed -i"" -r "s/__API_PORT__/${API_PORT}/" ${SENTINEL_CONFIG}

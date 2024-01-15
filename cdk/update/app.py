@@ -93,7 +93,9 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
     ),
     environment={
       "API_PORT": os.environ.get("API_PORT"),
-      "V2RAY_PORT": os.environ.get("V2RAY_PORT")
+      "V2RAY_PORT": os.environ.get("V2RAY_PORT"),
+      "AWS_REGION": os.environ.get("AWS_REGION"),
+      "MONIKER": wallet_key(wallet_number)
     },
     secrets={
       "PASSWORD": ecs.Secret.from_ssm_parameter(
