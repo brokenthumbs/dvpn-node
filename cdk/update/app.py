@@ -54,6 +54,11 @@ security_group.add_ingress_rule(
   ec2.Port.tcp(int(os.environ.get("V2RAY_PORT"))),
   "v2ray_port"
 )
+# security_group.add_ingress_rule(
+#   ec2.Peer.any_ipv4(),
+#   ec2.Port.tcp(int(os.environ.get("PROXYMAN_PORT"))),
+#   "proxyman_port"
+# )
 
 cluster = ecs.Cluster(
   stack, "EcsCluster",
@@ -117,6 +122,7 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
     port_mappings=[
       ecs.PortMapping(container_port=int(os.environ.get("API_PORT"))),
       ecs.PortMapping(container_port=int(os.environ.get("V2RAY_PORT")))
+      # ecs.PortMapping(container_port=int(os.environ.get("PROXYMAN_PORT")))
     ]
   )
   service = ecs.FargateService(

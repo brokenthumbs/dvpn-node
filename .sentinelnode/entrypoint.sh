@@ -2,12 +2,8 @@
 
 SENTINEL_CONFIG=/home/sentinel/.sentinelnode/config.toml
 V2RAY_CONFIG=/home/sentinel/.sentinelnode/v2ray.toml
-IPV4_ADDRESS_CHECKER="https://checkip.amazonaws.com"
+IPV4_ADDRESS_CHECKER=https://checkip.amazonaws.com
 MONIKER=${MONIKER:-"dvpn-node"}
-
-if [[ -n ${ECS_CONTAINER_METADATA_URI} ]]; then
-  IPV4_ADDRESS_CHECKER="http://169.254.169.254/latest/meta-data/public-ipv4"
-fi
 
 main() {
   case ${1} in
@@ -50,7 +46,7 @@ operator() {
 start() {
   if [[ -z ${PASSWORD} ]]; then exit 1; fi
   if [[ -z ${BIP39_MNEMONIC} ]]; then exit 1; fi
-  process keys add --recover < <(echo -e "${BIP39_MNEMONIC}\n${PASSWORD}\n${PASSWORD}\n")
+  process keys add --recover < <(echo -e "${BIP39_MNEMONIC}\n${PASSWORD}\n${PASSWORD}\n") > /dev/null
   process start < <(echo -e "${PASSWORD}\n")
 }
 

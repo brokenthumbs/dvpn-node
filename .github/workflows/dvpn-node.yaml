@@ -94,3 +94,4 @@ jobs:
           REPOSITORY_NAME: ${{ env.service_name }}
           API_PORT: 47368
           V2RAY_PORT: 56646
+          # PROXYMAN_PORT: 23
