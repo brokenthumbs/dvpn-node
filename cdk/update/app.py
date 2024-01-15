@@ -38,6 +38,22 @@ vpc = ec2.Vpc.from_lookup(
   vpc_name=os.environ.get("AWS_REGION")
 )
 
+security_group = ec2.SecurityGroup(stack, "SecurityGroup",
+  vpc=vpc,
+  allow_all_outbound=True,
+  disable_inline_rules=True
+)
+security_group.add_ingress_rule(
+  ec2.Peer.any_ipv4(),
+  ec2.Port.tcp(int(os.environ.get("API_PORT"))),
+  "api_port"
+)
+security_group.add_ingress_rule(
+  ec2.Peer.any_ipv4(),
+  ec2.Port.tcp(int(os.environ.get("V2RAY_PORT"))),
+  "v2ray_port"
+)
+
 cluster = ecs.Cluster(
   stack, "EcsCluster",
   vpc=vpc,
@@ -87,13 +103,18 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
       ecs.PortMapping(container_port=int(os.environ.get("V2RAY_PORT")))
     ]
   )
-  # service = ecs.FargateService(
-  #   stack, f"FargateService-{wallet_key(wallet_number)}",
-  #   cluster=cluster,
-  #   task_definition=fargate_task_definition,
-  #   enable_execute_command=True,
-  #   desired_count=1
-  # )
+  service = ecs.FargateService(
+    stack, f"FargateService-{wallet_key(wallet_number)}",
+    service_name=wallet_key(wallet_number),
+    cluster=cluster,
+    task_definition=fargate_task_definition,
+    assign_public_ip=True,
+    platform_version=ecs.FargatePlatformVersion.LATEST,
+    security_groups=[security_group],
+    enable_ecs_managed_tags=True,
+    enable_execute_command=True,
+    desired_count=1
+  )
   wallet_number += 1
 
 app.synth()
