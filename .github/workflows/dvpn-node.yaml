@@ -48,7 +48,7 @@ jobs:
         with:
           aws-region: ${{ matrix.region }}
           role-to-assume: ${{ env.role_to_assume }}
-      - name: (CDK) Initialize ECR
+      - name: CDK: Initialize ECR
         working-directory: ./cdk/initialize
         run: |
           cdk bootstrap aws://${{ env.aws_account_id }}/${{ matrix.region }}
@@ -65,6 +65,10 @@ jobs:
       - name: Docker Build Push
         uses: docker/build-push-action@v5
         with:
+          provenance: false
+          # file: Dockerfile
+          # platforms: |
+            # linux/amd64
           context: .
           push: true
           tags: |
