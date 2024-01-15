@@ -40,6 +40,11 @@ cluster = ecs.Cluster(
   enable_fargate_capacity_providers=True
 )
 
+repository = ecr.from_repository_arn(
+  stack, "Repository",
+  repository_arn=ecr.arn_for_local_repository(os.environ.get("REPOSITORY_NAME"))
+)
+
 wallet_number = 1
 while exist_ssm_parameter(wallet_key(wallet_number)):
   print(f"creating fargate service for wallet: {wallet_key(wallet_number)}")
@@ -51,7 +56,7 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
   fargate_task_definition.add_container(
     os.environ.get("REPOSITORY_NAME"),
     image=ecs.ContainerImage.from_ecr_repository(
-      repository=os.environ.get("REPOSITORY_NAME"),
+      repository=repository,
       tag="latest"
     ),
     secrets={
