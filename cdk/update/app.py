@@ -2,6 +2,7 @@ from aws_cdk import (
   aws_ec2 as ec2,
   aws_ecr as ecr,
   aws_ecs as ecs,
+  aws_logs as logs,
   aws_ssm as ssm,
   App, Stack
 )
@@ -79,6 +80,11 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
     memory_limit_mib=512,
     cpu=256,
   )
+  log_group = logs.LogGroup(
+    stack, f"LogGroup-{wallet_key(wallet_number)}",
+    log_group_name=wallet_key(wallet_number),
+    retention=logs.RetentionDays.ONE_WEEK
+  )
   fargate_task_definition.add_container(
     os.environ.get("REPOSITORY_NAME"),
     image=ecs.ContainerImage.from_ecr_repository(
@@ -97,10 +103,10 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
       )
     },
     command=["start"],
-    # logging=None,
     logging=ecs.LogDrivers.aws_logs(
         stream_prefix=os.environ.get("REPOSITORY_NAME"),
-        mode=ecs.AwsLogDriverMode.NON_BLOCKING
+        mode=ecs.AwsLogDriverMode.NON_BLOCKING,
+        log_group=log_group
     ),
     port_mappings=[
       ecs.PortMapping(container_port=int(os.environ.get("API_PORT"))),
