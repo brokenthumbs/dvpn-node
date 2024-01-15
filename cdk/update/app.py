@@ -132,7 +132,8 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
     desired_count=1,
     capacity_provider_strategies=[
       ecs.CapacityProviderStrategy(
-        capacity_provider="FARGATE_SPOT"
+        capacity_provider="FARGATE_SPOT",
+        weight=1
       )
     ]
   )
