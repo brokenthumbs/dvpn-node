@@ -8,7 +8,13 @@ import boto3
 import os
 
 app = App()
-stack = Stack(app, f"{os.environ.get("AWS_REGION")}-update")
+stack = Stack(
+  app, f"{os.environ.get("AWS_REGION")}-update"
+  env={
+    "account": os.environ.get("AWS_ACCOUNT_ID"),
+    "region": os.environ.get("AWS_REGION")
+  }
+)
 
 ssm_client = boto3.client("ssm", region_name=os.environ.get("AWS_REGION"))
 

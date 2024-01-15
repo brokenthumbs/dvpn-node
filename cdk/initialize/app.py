@@ -6,7 +6,13 @@ from aws_cdk import (
 import os
 
 app = App()
-stack = Stack(app, f"{os.environ.get("AWS_REGION")}-initialize")
+stack = Stack(
+  app, f"{os.environ.get("AWS_REGION")}-initialize"
+  env={
+    "account": os.environ.get("AWS_ACCOUNT_ID"),
+    "region": os.environ.get("AWS_REGION")
+  }
+)
 
 vpc = ec2.Vpc(
   stack, "Vpc",
