@@ -1,9 +1,6 @@
 from aws_cdk import (
-  aws_autoscaling as autoscaling,
   aws_ec2 as ec2,
   aws_ecr as ecr,
-  aws_ecs as ecs,
-  aws_ecr_assets as ecr_assets,
   App, Stack, RemovalPolicy
 )
 import os
@@ -13,7 +10,7 @@ stack = Stack(app, f"{os.environ.get("AWS_REGION")}-initialize")
 
 vpc = ec2.Vpc(
   stack, "Vpc",
-  vpc_name=f"{os.environ.get("AWS_REGION")}",
+  vpc_name=os.environ.get("AWS_REGION"),
   create_internet_gateway=True,
   max_azs=2,
   subnet_configuration=[

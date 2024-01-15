@@ -1,10 +1,8 @@
 from aws_cdk import (
-  aws_autoscaling as autoscaling,
   aws_ec2 as ec2,
   aws_ecr as ecr,
   aws_ecs as ecs,
-  aws_ecr_assets as ecr_assets,
-  App, Stack, RemovalPolicy
+  App, Stack
 )
 import boto3
 import os
@@ -23,6 +21,8 @@ def exist_ssm_parameter(param_name: str) -> bool:
     return True
   except ssm_client.exceptions.ParameterNotFound:
     return False
+
+vpc = ec2.Vpc.from_lookup(stack, "Vpc", vpc_id=os.environ.get("AWS_REGION"))
 
 cluster = ecs.Cluster(
   stack, "EcsCluster",
