@@ -91,6 +91,10 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
       repository=repository,
       tag="latest"
     ),
+    environment={
+      "API_PORT": os.environ.get("API_PORT"),
+      "V2RAY_PORT": os.environ.get("V2RAY_PORT")
+    },
     secrets={
       "PASSWORD": ecs.Secret.from_ssm_parameter(
         ssm_parameter_password
