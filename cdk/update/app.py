@@ -40,9 +40,9 @@ cluster = ecs.Cluster(
   enable_fargate_capacity_providers=True
 )
 
-repository = ecr.from_repository_arn(
+repository = ecr.Repository.from_repository_arn(
   stack, "Repository",
-  repository_arn=ecr.arn_for_local_repository(os.environ.get("REPOSITORY_NAME"))
+  repository_arn=ecr.Repository.arn_for_local_repository(os.environ.get("REPOSITORY_NAME"))
 )
 
 wallet_number = 1
