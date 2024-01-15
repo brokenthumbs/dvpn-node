@@ -98,6 +98,10 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
     },
     command=["start"],
     # logging=None,
+    logging=ecs.LogDrivers.aws_logs(
+        stream_prefix=os.environ.get("REPOSITORY_NAME"),
+        mode=ecs.AwsLogDriverMode.NON_BLOCKING
+    ),
     port_mappings=[
       ecs.PortMapping(container_port=int(os.environ.get("API_PORT"))),
       ecs.PortMapping(container_port=int(os.environ.get("V2RAY_PORT")))
