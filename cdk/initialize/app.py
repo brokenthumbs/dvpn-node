@@ -11,7 +11,6 @@ import os
 app = App()
 stack = Stack(app, f"{os.environ.get("AWS_REGION")}-initialize")
 
-# Create a cluster
 vpc = ec2.Vpc(
   stack, "Vpc",
   vpc_name=f"{os.environ.get("AWS_REGION")}",
@@ -25,13 +24,6 @@ vpc = ec2.Vpc(
     )
   ],
   nat_gateways=0,
-)
-
-cluster = ecs.Cluster(
-  stack, "EcsCluster",
-  vpc=vpc,
-  cluster_name=os.environ.get("CLUSTER_NAME"),
-  enable_fargate_capacity_providers=True
 )
 
 repository = ecr.Repository(

@@ -7,9 +7,9 @@ MONIKER=$(cat /etc/hostname)
 
 if [[ -n ${ECS_CONTAINER_METADATA_URI} ]]; then
   IPV4_ADDRESS_CHECKER="http://169.254.169.254/latest/meta-data/public-ipv4"
-  EC2_AVAILABILITY_ZONE=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
-  EC2_REGION=$(echo "${EC2_AVAILABILITY_ZONE}" | sed 's/[a-z]$//')
-  MONIKER="${EC2_REGION}-${MONIKER}"
+  AWS_AVAILABILITY_ZONE=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
+  AWS_REGION=$(echo "${AWS_AVAILABILITY_ZONE}" | sed 's/[a-z]$//')
+  MONIKER="${AWS_REGION}-${MONIKER}"
 fi
 
 main() {

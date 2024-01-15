@@ -56,16 +56,15 @@ jobs:
         with:
           aws-region: ${{ matrix.region }}
           role-to-assume: ${{ env.role_to_assume }}
-      # - name: (CDK) Initialize ECR
-      #   working-directory: ./cdk/initialize
-      #   run: |
-      #     cdk bootstrap aws://${{ env.aws_account_id }}/${{ matrix.region }}
-      #     cdk deploy
-      #   env:
-      #     AWS_REGION: ${{ matrix.region }}
-      #     CLUSTER_NAME: ${{ env.service_name }}
-      #     REPOSITORY_NAME: ${{ env.service_name }}
-      #     MAX_IMAGE_COUNT: ${{ env.max_image_count }}
+      - name: (CDK) Initialize ECR
+        working-directory: ./cdk/initialize
+        run: |
+          cdk bootstrap aws://${{ env.aws_account_id }}/${{ matrix.region }}
+          cdk deploy
+        env:
+          AWS_REGION: ${{ matrix.region }}
+          REPOSITORY_NAME: ${{ env.service_name }}
+          MAX_IMAGE_COUNT: ${{ env.max_image_count }}
       # - name: Login to Amazon ECR
       #   id: login-ecr
       #   uses: aws-actions/amazon-ecr-login@v2
@@ -89,3 +88,7 @@ jobs:
           cdk deploy
         env:
           AWS_REGION: ${{ matrix.region }}
+          CLUSTER_NAME: ${{ env.service_name }}
+          REPOSITORY_NAME: ${{ env.service_name }}
+          API_PORT: 47368
+          V2RAY_PORT: 56646
