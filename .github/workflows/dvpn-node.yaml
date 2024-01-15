@@ -1,13 +1,13 @@
 name: dvpn-node
 
 on:
-  # push:
-  #   branches:
-  #     - main
-  #   paths:
-  #     - .sentinelnode/**
-  #     - cdk/**
-  #     - Dockerfile
+  push:
+    branches:
+      - main
+    paths:
+      - .sentinelnode/**
+      - cdk/**
+      - Dockerfile
   workflow_dispatch:
 
 permissions:
@@ -17,10 +17,6 @@ permissions:
 env:
   python_version: "3.12"
   node_version: "20"
-  aws_account_id: "103309208207"
-  service_name: "dvpn-node"
-  api_port: 8000
-  v2ray_port: 8420
 
 jobs:
   cdk:
@@ -36,7 +32,10 @@ jobs:
     steps:
       - name: Set environment variables
         run: |
-          echo "role_to_assume=arn:aws:iam::${{ env.aws_account_id }}:role/${{ env.service_name }}" >> ${GITHUB_ENV}
+          echo "role_to_assume=arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/${{ github.workflow }}" >> ${GITHUB_ENV}
+          echo "aws_account_id=${{ env.AWS_ACCOUNT_ID }}" >> ${GITHUB_ENV}
+          echo "api_port=${{ env.API_PORT }}" >> ${GITHUB_ENV}
+          echo "v2ray_port=${{ env.V2RAY_PORT }}" >> ${GITHUB_ENV}
       - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -67,7 +66,7 @@ jobs:
         env:
           AWS_ACCOUNT_ID: ${{ env.aws_account_id }}
           AWS_REGION: ${{ matrix.region }}
-          REPOSITORY_NAME: ${{ env.service_name }}
+          REPOSITORY_NAME: ${{ github.workflow }}
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
@@ -80,8 +79,8 @@ jobs:
           provenance: false
           push: true
           tags: |
-            ${{ steps.login-ecr.outputs.registry }}/${{ env.service_name }}:latest
-            ${{ steps.login-ecr.outputs.registry }}/${{ env.service_name }}:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ github.workflow }}:latest
+            ${{ steps.login-ecr.outputs.registry }}/${{ github.workflow }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: (CDK) Update ECS
@@ -92,8 +91,8 @@ jobs:
         env:
           AWS_ACCOUNT_ID: ${{ env.aws_account_id }}
           AWS_REGION: ${{ matrix.region }}
-          CLUSTER_NAME: ${{ env.service_name }}
-          REPOSITORY_NAME: ${{ env.service_name }}
+          CLUSTER_NAME: ${{ github.workflow }}
+          REPOSITORY_NAME: ${{ github.workflow }}
           IMAGE_TAG: ${{ github.sha }}
           API_PORT: ${{ env.api_port }}
           V2RAY_PORT: ${{ env.v2ray_port }}

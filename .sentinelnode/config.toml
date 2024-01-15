@@ -48,7 +48,7 @@ interval_update_sessions = "1h0m0s"
 interval_update_status = "30m0s"
 
 # IPv4 address to replace the public IPv4 address with
-ipv4_address = "__IPV4_ADDRESS__"
+ipv4_address = ""
 
 # API listen-address
 listen_on = "0.0.0.0:__API_PORT__"
