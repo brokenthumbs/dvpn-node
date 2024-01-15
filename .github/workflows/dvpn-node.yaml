@@ -10,7 +10,7 @@ permissions:
   contents: read    # This is required for actions/checkout
 
 env:
-  account_id: "103309208207"
+  aws_account_id: "103309208207"
   role_to_assume: arn:aws:iam::103309208207:role/dvpn-node
 
 jobs:
@@ -45,25 +45,24 @@ jobs:
         with:
           aws-region: ${{ matrix.region }}
           role-to-assume: ${{ env.role_to_assume }}
-      - name: Use CDK to initialize AWS Region
-        working-directory: ./cdk/initialize
+      # - name: Use CDK to initialize AWS Region
+      #   working-directory: ./cdk/initialize
+      #   run: |
+      #     cdk bootstrap aws://${{ env.aws_account_id }}/${{ matrix.region }}
+      #     cdk deploy
+      #   env:
+      #     AWS_REGION: ${{ matrix.region }}
+      - name: Build and upload Docker image to ECR
+        shell: bash
         run: |
-          cdk bootstrap aws://${{ env.account_id }}/${{ matrix.region }}
-          cdk deploy
+          .github/scripts/docker.sh
         env:
           AWS_REGION: ${{ matrix.region }}
-      - name: Build Docker Image
-        run: |
-          echo "build docker image"
-      - name: Upload Docker Image to ECR
-        run: |
-          echo "upload docker image"
-        env:
-          AWS_REGION: ${{ matrix.region }}
-      - name: Use CDK to update ECS Services
-        working-directory: ./cdk/update
-        run: |
-          cdk bootstrap aws://${{ env.account_id }}/${{ matrix.region }}
-          cdk deploy
-        env:
-          AWS_REGION: ${{ matrix.region }}
+          AWS_ACCOUNT_ID: ${{ env.aws_account_id }}
+      # - name: Use CDK to update ECS Services
+      #   working-directory: ./cdk/update
+      #   run: |
+      #     cdk bootstrap aws://${{ env.aws_account_id }}/${{ matrix.region }}
+      #     cdk deploy
+      #   env:
+      #     AWS_REGION: ${{ matrix.region }}
