@@ -110,7 +110,7 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
     },
     command=["start"],
     logging=ecs.LogDrivers.aws_logs(
-        stream_prefix=wallet_key(wallet_number),
+        stream_prefix="sentinel",
         mode=ecs.AwsLogDriverMode.NON_BLOCKING,
         log_group=log_group
     ),
