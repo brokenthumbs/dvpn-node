@@ -38,6 +38,7 @@ repository = ecr.Repository(
   repository_name=os.environ.get("REPOSITORY_NAME"),
   lifecycle_rules=[
     ecr.LifecycleRule(
+      rule_priority=10,
       max_image_count=1,
       tag_status=ecr.TagStatus.ANY
     )
