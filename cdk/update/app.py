@@ -94,7 +94,7 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
     os.environ.get("REPOSITORY_NAME"),
     image=ecs.ContainerImage.from_ecr_repository(
       repository=repository,
-      tag="latest"
+      tag=os.environ.get("IMAGE_TAG")
     ),
     environment={
       "API_PORT": os.environ.get("API_PORT"),
