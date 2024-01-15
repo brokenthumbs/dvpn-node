@@ -23,11 +23,11 @@ jobs:
         region: ["eu-west-3"]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: "Set environmental variables"
+      - name: Set environment variables
         run: |
           echo "role_to_assume=arn:aws:iam::${{ env.aws_account_id }}:role/${{ env.service_name }}" >> $GITHUB_ENV
       - uses: actions/checkout@v4
-      - name: Set up Python 3.9
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -48,23 +48,20 @@ jobs:
         with:
           aws-region: ${{ matrix.region }}
           role-to-assume: ${{ env.role_to_assume }}
-      # - name: Use CDK to initialize AWS Region
-      #   working-directory: ./cdk/initialize
-      #   run: |
-      #     cdk bootstrap aws://${{ env.aws_account_id }}/${{ matrix.region }}
-      #     cdk deploy
-      #   env:
-      #     AWS_REGION: ${{ matrix.region }}
-      #     CLUSTER_NAME: ${{ env.service_name }}
-      #     REPOSITORY_NAME: ${{ env.service_name }}
-
+      - name: [CDK] Initialize ECR
+        working-directory: ./cdk/initialize
+        run: |
+          cdk bootstrap aws://${{ env.aws_account_id }}/${{ matrix.region }}
+          cdk deploy
+        env:
+          AWS_REGION: ${{ matrix.region }}
+          CLUSTER_NAME: ${{ env.service_name }}
+          REPOSITORY_NAME: ${{ env.service_name }}
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
       - name: Docker Build Push
         uses: docker/build-push-action@v5
         with:
@@ -76,17 +73,9 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # - name: Build and upload Docker image to ECR
-      #   shell: bash
-      #   run: |
-      #     .github/scripts/docker.sh
-      #   env:
-      #     AWS_REGION: ${{ matrix.region }}
-      #     AWS_ACCOUNT_ID: ${{ env.aws_account_id }}
 
 
-
-      # - name: Use CDK to update ECS Services
+      # - name: [CDK] Update ECS
       #   working-directory: ./cdk/update
       #   run: |
       #     cdk bootstrap aws://${{ env.aws_account_id }}/${{ matrix.region }}
