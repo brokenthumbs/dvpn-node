@@ -48,7 +48,7 @@ jobs:
         with:
           aws-region: ${{ matrix.region }}
           role-to-assume: ${{ env.role_to_assume }}
-      - name: CDK: Initialize ECR
+      - name: (CDK) Initialize ECR
         working-directory: ./cdk/initialize
         run: |
           cdk bootstrap aws://${{ env.aws_account_id }}/${{ matrix.region }}
