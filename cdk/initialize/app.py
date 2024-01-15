@@ -43,7 +43,7 @@ repository = ecr.Repository(
   repository_name=os.environ.get("REPOSITORY_NAME"),
   lifecycle_rules=[
     ecr.LifecycleRule(
-      max_image_count=os.environ.get("MAX_IMAGE_COUNT", 1),
+      max_image_count=int(os.environ.get("MAX_IMAGE_COUNT", 1)),
     )
   ]
 )
