@@ -15,7 +15,7 @@ stack = Stack(app, f"{os.environ.get("AWS_REGION")}-update")
 ssm_client = boto3.client("ssm", region_name=os.environ.get("AWS_REGION"))
 
 def wallet_key(number: int) -> str:
-  return f"{os.environ.get("AWS_REGION")}:{format(number, "04d")}"
+  return f"{os.environ.get("AWS_REGION")}-{format(number, "04d")}"
 
 def exist_ssm_param(param_name: str) -> bool:
   try:
