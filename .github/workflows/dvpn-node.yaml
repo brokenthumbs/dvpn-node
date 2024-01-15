@@ -52,13 +52,37 @@ jobs:
       #     cdk deploy
       #   env:
       #     AWS_REGION: ${{ matrix.region }}
-      - name: Build and upload Docker image to ECR
-        shell: bash
-        run: |
-          .github/scripts/docker.sh
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Docker Build Push
+        uses: docker/build-push-action@v5
         env:
-          AWS_REGION: ${{ matrix.region }}
-          AWS_ACCOUNT_ID: ${{ env.aws_account_id }}
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: my-ecr-repo
+          IMAGE_TAG: ${{ github.sha }}
+        with:
+          context: .
+          # provenance: false
+          push: true
+          tags: |
+            ${REGISTRY}/${REPOSITORY}:latest
+            ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # - name: Build and upload Docker image to ECR
+      #   shell: bash
+      #   run: |
+      #     .github/scripts/docker.sh
+      #   env:
+      #     AWS_REGION: ${{ matrix.region }}
+      #     AWS_ACCOUNT_ID: ${{ env.aws_account_id }}
+
+
+
       # - name: Use CDK to update ECS Services
       #   working-directory: ./cdk/update
       #   run: |
