@@ -12,13 +12,13 @@ gas_prices = "0.1udvpn"
 id = "sentinelhub-2"
 
 # Comma separated Tendermint RPC addresses for the chain
-rpc_addresses = "https://rpc.sentinel.co:443,https://rpc.sentinel.quokkastake.io:443,https://rpc.trinityvalidator.com:443,https://rpc.mathnodes.com:443,https://rpc-sentinel.whispernode.com:443,https://rpc.sentinel.chaintools.tech:443,https://sentinel-rpc.publicnode.com:443"
+rpc_addresses = "https://rpc.sentinel.co:443,https://rpc.sentinel.quokkastake.io:443,https://rpc.trinityvalidator.com:443,https://rpc-sentinel.whispernode.com:443,https://rpc.sentinel.chaintools.tech:443"
 
 # Timeout seconds for querying the data from the RPC server
-rpc_query_timeout = 10
+rpc_query_timeout = 60
 
 # Timeout seconds for broadcasting the transaction through RPC server
-rpc_tx_timeout = 30
+rpc_tx_timeout = 60
 
 # Calculate the transaction fee by simulating it
 simulate_and_execute = true

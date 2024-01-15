@@ -91,6 +91,7 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
       repository=repository,
       tag=os.environ.get("IMAGE_TAG")
     ),
+    user="root",
     environment={
       "API_PORT": os.environ.get("API_PORT"),
       "V2RAY_PORT": os.environ.get("V2RAY_PORT"),
@@ -109,6 +110,8 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
       )
     },
     command=["start"],
+    interactive=False,
+    privileged=False,
     logging=ecs.LogDrivers.aws_logs(
         stream_prefix="sentinel",
         mode=ecs.AwsLogDriverMode.NON_BLOCKING,
@@ -121,6 +124,8 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
       start_period=Duration.minutes(5),
       timeout=Duration.seconds(5)
     ),
+    start_timeout=Duration.minutes(2),
+    stop_timeout=Duration.minutes(2),
     port_mappings=[
       ecs.PortMapping(container_port=int(os.environ.get("API_PORT"))),
       ecs.PortMapping(container_port=int(os.environ.get("V2RAY_PORT")))
