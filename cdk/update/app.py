@@ -74,7 +74,7 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
         )
       )
     },
-    command="start",
+    command=["start"],
     logging=None,
     port_mappings=[
       ecs.PortMapping(container_port=int(os.environ.get("API_PORT"))),
