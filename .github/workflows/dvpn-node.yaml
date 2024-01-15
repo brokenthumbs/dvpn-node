@@ -19,7 +19,6 @@ env:
   node_version: "20"
   aws_account_id: "103309208207"
   service_name: "dvpn-node"
-  max_image_count: 1
   api_port: 47368
   v2ray_port: 56646
 
@@ -69,7 +68,6 @@ jobs:
           AWS_ACCOUNT_ID: ${{ env.aws_account_id }}
           AWS_REGION: ${{ matrix.region }}
           REPOSITORY_NAME: ${{ env.service_name }}
-          MAX_IMAGE_COUNT: ${{ env.max_image_count }}
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
@@ -99,4 +97,3 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           API_PORT: ${{ env.api_port }}
           V2RAY_PORT: ${{ env.v2ray_port }}
-          # PROXYMAN_PORT: 23

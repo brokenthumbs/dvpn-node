@@ -12,7 +12,7 @@ gas_prices = "0.1udvpn"
 id = "sentinelhub-2"
 
 # Comma separated Tendermint RPC addresses for the chain
-rpc_addresses = "https://rpc.sentinel.co:443"
+rpc_addresses = "https://rpc.sentinel.co:443,https://rpc.sentinel.quokkastake.io:443,https://rpc.trinityvalidator.com:443"
 
 # Timeout seconds for querying the data from the RPC server
 rpc_query_timeout = 10
@@ -39,13 +39,13 @@ from = "operator"
 
 [node]
 # Time interval between each set_sessions operation
-interval_set_sessions = "10s"
+interval_set_sessions = "5s"
 
 # Time interval between each update_sessions transaction
-interval_update_sessions = "1h55m0s"
+interval_update_sessions = "1h0m0s"
 
 # Time interval between each set_status transaction
-interval_update_status = "55m0s"
+interval_update_status = "30m0s"
 
 # IPv4 address to replace the public IPv4 address with
 ipv4_address = "__IPV4_ADDRESS__"

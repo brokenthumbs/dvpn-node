@@ -46,7 +46,7 @@ operator() {
 start() {
   if [[ -z ${PASSWORD} ]]; then exit 1; fi
   if [[ -z ${BIP39_MNEMONIC} ]]; then exit 1; fi
-  process keys add --recover < <(echo -e "${BIP39_MNEMONIC}\n${PASSWORD}\n${PASSWORD}\n") > /dev/null
+  process keys add --recover < <(echo -e "${BIP39_MNEMONIC}\n${PASSWORD}\n${PASSWORD}\n") 1>/dev/null 2>&1
   process start < <(echo -e "${PASSWORD}\n")
 }
 
