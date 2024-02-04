@@ -11,7 +11,7 @@ import os
 
 app = App()
 stack = Stack(
-  app, f"{os.environ.get("AWS_REGION")}-update",
+  app, f"{os.environ.get("REPOSITORY_NAME")}-update",
   env={
     "account": os.environ.get("AWS_ACCOUNT_ID"),
     "region": os.environ.get("AWS_REGION")
@@ -22,7 +22,7 @@ ssm_client = boto3.client("ssm", region_name=os.environ.get("AWS_REGION"))
 ssm_parameters = []
 
 def wallet_key(number: int) -> str:
-  return f"{os.environ.get("AWS_REGION")}-{format(number, "04d")}"
+  return f"{os.environ.get("REPOSITORY_NAME")}/{os.environ.get("AWS_REGION")}-{format(number, "04d")}"
 
 def exist_ssm_parameter(parameter_name: str) -> bool:
   if parameter_name in ssm_parameters:
@@ -36,7 +36,7 @@ def exist_ssm_parameter(parameter_name: str) -> bool:
 
 vpc = ec2.Vpc.from_lookup(
   stack, "Vpc",
-  vpc_name=os.environ.get("AWS_REGION")
+  vpc_name=os.environ.get("REPOSITORY_NAME")
 )
 
 security_group = ec2.SecurityGroup(stack, "SecurityGroup",

@@ -7,7 +7,7 @@ import os
 
 app = App()
 stack = Stack(
-  app, f"{os.environ.get("AWS_REGION")}-initialize",
+  app, f"{os.environ.get("REPOSITORY_NAME")}-initialize",
   env={
     "account": os.environ.get("AWS_ACCOUNT_ID"),
     "region": os.environ.get("AWS_REGION")
@@ -16,7 +16,7 @@ stack = Stack(
 
 vpc = ec2.Vpc(
   stack, "Vpc",
-  vpc_name=os.environ.get("AWS_REGION"),
+  vpc_name=os.environ.get("REPOSITORY_NAME"),
   create_internet_gateway=True,
   max_azs=2,
   subnet_configuration=[
