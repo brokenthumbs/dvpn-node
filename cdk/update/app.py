@@ -69,7 +69,7 @@ repository = ecr.Repository.from_repository_name(
 
 ssm_parameter_password = ssm.StringParameter.from_secure_string_parameter_attributes(
   stack, "StringParameter-password",
-  parameter_name=f"{os.environ.get("REPOSITORY_NAME")}/password"
+  parameter_name=f"/{os.environ.get("REPOSITORY_NAME")}/password"
 )
 
 wallet_number = 1
@@ -109,7 +109,7 @@ while exist_ssm_parameter(wallet_key(wallet_number)):
       "BIP39_MNEMONIC": ecs.Secret.from_ssm_parameter(
         ssm.StringParameter.from_secure_string_parameter_attributes(
           stack, f"StringParameter-{wallet_key(wallet_number)}",
-          parameter_name=wallet_key(wallet_number)
+          parameter_name=f"/{wallet_key(wallet_number)}"
         )
       )
     },
