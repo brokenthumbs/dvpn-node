@@ -69,7 +69,7 @@ repository = ecr.Repository.from_repository_name(
 
 ssm_parameter_password = ssm.StringParameter.from_secure_string_parameter_attributes(
   stack, "StringParameter-password",
-  parameter_name="password"
+  parameter_name=f"{os.environ.get("REPOSITORY_NAME")}/password"
 )
 
 wallet_number = 1
