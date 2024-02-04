@@ -22,7 +22,10 @@ ssm_client = boto3.client("ssm", region_name=os.environ.get("AWS_REGION"))
 ssm_parameters = []
 
 def wallet_key(number: int) -> str:
-  return f"{os.environ.get("REPOSITORY_NAME")}/{os.environ.get("AWS_REGION")}-{format(number, "04d")}"
+  return f"{os.environ.get("AWS_REGION")}-{format(number, "04d")}"
+
+def wallet_key_ssm_parameter(number: int) -> str:
+  return f"/{os.environ.get("REPOSITORY_NAME")}/{wallet_key(number)}"
 
 def exist_ssm_parameter(parameter_name: str) -> bool:
   if parameter_name in ssm_parameters:
@@ -73,7 +76,7 @@ ssm_parameter_password = ssm.StringParameter.from_secure_string_parameter_attrib
 )
 
 wallet_number = 1
-while exist_ssm_parameter(f"/{wallet_key(wallet_number)}"):
+while exist_ssm_parameter(f"{wallet_key_ssm_parameter(wallet_number)}"):
   fargate_task_definition = ecs.FargateTaskDefinition(
     stack, f"FargateTaskDefinition-{wallet_key(wallet_number)}",
     family=wallet_key(wallet_number),
@@ -82,7 +85,7 @@ while exist_ssm_parameter(f"/{wallet_key(wallet_number)}"):
   )
   log_group = logs.LogGroup(
     stack, f"LogGroup-{wallet_key(wallet_number)}",
-    log_group_name=wallet_key(wallet_number),
+    log_group_name=wallet_key_ssm_parameter(wallet_number),
     retention=logs.RetentionDays.ONE_WEEK
   )
   fargate_task_definition.add_container(
@@ -109,7 +112,7 @@ while exist_ssm_parameter(f"/{wallet_key(wallet_number)}"):
       "BIP39_MNEMONIC": ecs.Secret.from_ssm_parameter(
         ssm.StringParameter.from_secure_string_parameter_attributes(
           stack, f"StringParameter-{wallet_key(wallet_number)}",
-          parameter_name=f"/{wallet_key(wallet_number)}"
+          parameter_name=f"{wallet_key_ssm_parameter(wallet_number)}"
         )
       )
     },
@@ -117,7 +120,7 @@ while exist_ssm_parameter(f"/{wallet_key(wallet_number)}"):
     interactive=False,
     privileged=False,
     logging=ecs.LogDrivers.aws_logs(
-        stream_prefix="sentinel",
+        stream_prefix=os.environ.get("REPOSITORY_NAME"),
         mode=ecs.AwsLogDriverMode.NON_BLOCKING,
         log_group=log_group
     ),
