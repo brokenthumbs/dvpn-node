@@ -73,7 +73,7 @@ ssm_parameter_password = ssm.StringParameter.from_secure_string_parameter_attrib
 )
 
 wallet_number = 1
-while exist_ssm_parameter(wallet_key(wallet_number)):
+while exist_ssm_parameter(f"/{wallet_key(wallet_number)}):
   fargate_task_definition = ecs.FargateTaskDefinition(
     stack, f"FargateTaskDefinition-{wallet_key(wallet_number)}",
     family=wallet_key(wallet_number),
