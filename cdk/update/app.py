@@ -85,7 +85,7 @@ while exist_ssm_parameter(f"{wallet_key_ssm_parameter(wallet_number)}"):
   )
   log_group = logs.LogGroup(
     stack, f"LogGroup-{wallet_key(wallet_number)}",
-    log_group_name=wallet_key_ssm_parameter(wallet_number),
+    log_group_name=wallet_key(wallet_number),
     retention=logs.RetentionDays.ONE_WEEK
   )
   fargate_task_definition.add_container(
@@ -120,7 +120,7 @@ while exist_ssm_parameter(f"{wallet_key_ssm_parameter(wallet_number)}"):
     interactive=False,
     privileged=False,
     logging=ecs.LogDrivers.aws_logs(
-        stream_prefix=os.environ.get("REPOSITORY_NAME"),
+        stream_prefix="sentinel",
         mode=ecs.AwsLogDriverMode.NON_BLOCKING,
         log_group=log_group
     ),
