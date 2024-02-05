@@ -5,9 +5,9 @@ on:
     branches:
       - main
     paths:
-      - .sentinelnode/**
       - cdk/**
       - Dockerfile
+      - entrypoint.sh
   workflow_dispatch:
 
 permissions:

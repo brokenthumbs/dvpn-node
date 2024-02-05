@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# trigger a new deploy
+# .
+
 SENTINEL_CONFIG_PATH=${SENTINEL_NODE_DIR}/config.toml
 V2RAY_CONFIG_PATH=${SENTINEL_NODE_DIR}/v2ray.toml
 
