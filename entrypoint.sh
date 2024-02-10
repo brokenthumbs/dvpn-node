@@ -85,6 +85,35 @@ operator() {
   echo ${OPERATOR_ADDRESS} | rev | cut -d ' ' -f 2 | rev
 }
 
+set_rpc_address() {
+  IFS=',' read -r -a UNSORTED_RPC_ADDRESS <<< "${RPC_ADDRESS}"
+
+  declare -A EXECUTION_TIMES
+
+  # Loop through each node
+  for NODE in "${UNSORTED_RPC_ADDRESS[@]}"; do
+    START_TIME=$(date +%s%N)
+    curl --silent "${NODE}/block" > /dev/null
+    END_TIME=$(date +%s%N)
+    EXECUTION_TIME=$(echo "${END_TIME} - ${START_TIME}" | bc)
+    EXECUTION_TIMES["${NODE}"]="${EXECUTION_TIME}"
+    # echo "Finished testing ${NODE}, Execution took: ${EXECUTION_TIME}"
+  done
+
+  SORTED_NODES=($(for NODE in "${UNSORTED_RPC_ADDRESS[@]}"; do echo "${NODE} ${EXECUTION_TIMES["${NODE}"]}"; done | sort -k2 -n | awk '{print $1}'))
+  # for NODE in "${SORTED_NODES[@]}"; do
+  #   echo "Node: ${NODE}, Execution Time: ${EXECUTION_TIMES["${NODE}"]}"
+  # done
+
+  NEW_ADDRS=()
+  for ((a = 0; a <= 4; a++)); do
+    NEW_ADDRS+=("${SORTED_NODES[$a]}")
+  done
+
+  SORTED_RPC_ADDRESS=$(IFS=,; echo "${NEW_ADDRS[*]}")
+  echo ${SORTED_RPC_ADDRESS}
+}
+
 start() {
   check_var "PASSWORD"
   check_var "BIP39_MNEMONIC"
@@ -92,6 +121,7 @@ start() {
   check_var "V2RAY_PORT"
   process config init
   process v2ray config init
+  export RPC_ADDRESS=$(set_rpc_address)
   for VAR in "${!CONFIG_MAPPINGS[@]}"; do
     update_config "${VAR}" "${CONFIG_MAPPINGS[${VAR}]}" "${SENTINEL_CONFIG_PATH}"
   done
