@@ -101,7 +101,7 @@ while exist_ssm_parameter(f"{wallet_key_ssm_parameter(wallet_number)}"):
       "V2RAY_PORT": os.environ.get("V2RAY_PORT"),
       "HANDSHAKE": "false",
       "MONIKER": wallet_key(wallet_number),
-      "RPC_ADDRESS": "https://rpc.sentinel.co:443,https://sentinel-rpc.polkachu.com:443,https://sentinel-rpc.validatornode.com:443,https://sentinel-rpc.badgerbite.io:443,https://sentinel-rpc.publicnode.com:443,https://rpc.sentinel.quokkastake.io:443,https://rpc-sentinel.whispernode.com:443,https://rpc.sentinel.chaintools.tech:443,https://rpc.mathnodes.com:443,https://rpc.dvpn.roomit.xyz:443,https://rpc.trinityvalidator.com:443",
+      "RPC_ADDRESS": "https://rpc.sentinel.co:443,https://sentinel-rpc.polkachu.com:443,https://sentinel-rpc.badgerbite.io:443,https://sentinel-rpc.publicnode.com:443,https://rpc.sentinel.quokkastake.io:443,https://rpc.sentinel.chaintools.tech:443,https://rpc.mathnodes.com:443,https://rpc.dvpn.roomit.xyz:443,https://rpc.trinityvalidator.com:443",
       "GIGABYTE_PRICES": "52573ibc/31FEE1A2A9F9C01113F90BD0BBCCE8FD6BBB8585FAF109A2101827DD1D5B95B8,9204ibc/A8C2D23A1E6F95DA4E48BA349667E322BD7A6C996D8A4AAE8BA72E190F3D1477,1180852ibc/B1C0DDB14F25279A2026BC8794E12B259F8BDA546A3C5132CCAEE4431CE36783,122740ibc/ED07A3391A112B175915CD8FAF43A2DA8E4790EDE12566649D0C2F97716B8518,15342624udvpn",
       "HOURLY_PRICES": "18480ibc/31FEE1A2A9F9C01113F90BD0BBCCE8FD6BBB8585FAF109A2101827DD1D5B95B8,770ibc/A8C2D23A1E6F95DA4E48BA349667E322BD7A6C996D8A4AAE8BA72E190F3D1477,1871892ibc/B1C0DDB14F25279A2026BC8794E12B259F8BDA546A3C5132CCAEE4431CE36783,18897ibc/ED07A3391A112B175915CD8FAF43A2DA8E4790EDE12566649D0C2F97716B8518,4160000udvpn"
     },
