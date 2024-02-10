@@ -111,7 +111,7 @@ set_rpc_address() {
   done
 
   SORTED_RPC_ADDRESS=$(IFS=,; echo "${NEW_ADDRS[*]}")
-  echo ${SORTED_RPC_ADDRESS}
+  echo ${SORTED_RPC_ADDRESS%,}
 }
 
 start() {
