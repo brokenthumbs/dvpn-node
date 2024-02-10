@@ -106,7 +106,7 @@ set_rpc_address() {
   # done
 
   NEW_ADDRS=()
-  for ((a = 0; a <= 4; a++)); do
+  for ((a = 0; a <= ${#UNSORTED_RPC_ADDRESS[@]}; a++)); do
     NEW_ADDRS+=("${SORTED_NODES[$a]}")
   done
 
